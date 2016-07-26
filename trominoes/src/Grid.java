@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by mario on 23-Jul-16.
  */
@@ -23,15 +20,13 @@ public final class Grid {
                this.squares[x][y] = new Square(x,y);
            }
        }
-
-       int a = 0;
     }
 
     public final void selectSquare( int x, int y)
     {
         selectedSquare = this.squares[x][y];
         selectedSquare.setUsed(true);
-        selectedSquare.setSelected(true);
+        selectedSquare.select();
     }
 
     public Square getSquare(int x, int y)
@@ -63,5 +58,4 @@ public final class Grid {
             }
         }
     }
-
 }

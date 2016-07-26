@@ -8,13 +8,11 @@ public class Square
     private String displayField = "OO";
 
     private boolean isUsed;
-    private boolean isSelected;
 
     public Square(int x, int y)
     {
         this.x = x;
         this.y = y;
-
     }
 
     public boolean isUsed()
@@ -27,14 +25,8 @@ public class Square
         isUsed = used;
     }
 
-    public boolean isSelected()
+    public void select()
     {
-        return this.isSelected;
-    }
-
-    public void setSelected(boolean selected)
-    {
-        this.isSelected = selected;
         this.displayField = "XX";
     }
 

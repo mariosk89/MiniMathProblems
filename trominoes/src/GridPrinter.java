@@ -1,13 +1,10 @@
 /**
  * Created by mario on 23-Jul-16.
  */
-public class GridPrinter
+public final class GridPrinter
 {
     public static void printGrid(Grid grid)
     {
-        System.out.println();
-        System.out.println(""+grid.getSize()+"x"+grid.getSize()+" grid");
-        System.out.println("-----------------");
         System.out.print("  ");
         for(int i = 0 ; i < grid.getSize() ; i++)
         {

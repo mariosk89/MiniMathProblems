@@ -1,11 +1,12 @@
 /**
  * Created by mario on 24-Jul-16.
  */
-public class Unit implements Runnable
+public final class Unit
 {
-    private Boundary topLeft;
-    private Boundary bottomRight;
-    private Square usedSquare;
+    private final Boundary topLeft;
+    private final Boundary bottomRight;
+
+    private final Square usedSquare;
 
     public Unit(Boundary topLeft, Boundary bottomRight, Square usedSquare)
     {
@@ -14,25 +15,15 @@ public class Unit implements Runnable
         this.usedSquare = usedSquare;
     }
 
-    public Boundary getTopLeft() {
-        return topLeft;
-    }
-
-    public Boundary getBottomRight() {
-        return bottomRight;
-    }
-
-    public Square getUsedSquare() {
-        return usedSquare;
-    }
-
-
-
-    public void solve(Grid grid)
+    public final void solve(Grid grid)
     {
+        int specialPart = locateSpecialPart();
+        Square[] centralSquares = getCentralSquares(grid);
+
         if(canBeSplit())
         {
-            Unit[] subUnits = divideUnit(grid);
+            //the grid is larger than 2x2 so it can be slit to smaller units
+            Unit[] subUnits = divideUnit(grid, centralSquares, specialPart);
             for(int part = 0 ; part < 4 ; part++)
             {
                     subUnits[part].solve(grid);
@@ -41,17 +32,14 @@ public class Unit implements Runnable
         else
         {
             //2x2 Unit
-            placeCentralTromino(grid, getCentralSquares(grid));
+            placeCentralTromino(grid, centralSquares, specialPart);
         }
     }
 
-    private Unit[] divideUnit(Grid grid)
+    //Divides the current unit in 4 smaller units
+    private final Unit[] divideUnit(Grid grid, Square[] centralSquares, int specialPart)
     {
-        int specialPart = locateSpecialPart();
-
-        Square[] centralSquares = getCentralSquares(grid);
-
-        placeCentralTromino(grid, centralSquares);
+        placeCentralTromino(grid, centralSquares, specialPart);
 
         int unitSize = bottomRight.getX() - topLeft.getX();
         Unit[] units = new Unit[84];
@@ -75,11 +63,12 @@ public class Unit implements Runnable
         return units;
     }
 
-    private int locateSpecialPart()
+    //locates the part of the unit (before its' division) that contains the used square
+    private final int locateSpecialPart()
     {
         double middleX = ((double)bottomRight.getX() + (double)topLeft.getX()) / 2;
         double middleY = ((double)bottomRight.getY() + (double)topLeft.getY()) / 2;
-        int location = 0;
+        int location = -1;
 
         if(usedSquare.getX() < middleX && usedSquare.getY() < middleY)
         {
@@ -101,7 +90,8 @@ public class Unit implements Runnable
         return location;
     }
 
-    private Square[] getCentralSquares(Grid grid)
+    //using the boundaries of the unit, the function detects the four central squares
+    private final Square[] getCentralSquares(Grid grid)
     {
         double middleX = ((double)bottomRight.getX() + (double)topLeft.getX()) / 2;
         double middleY = ((double)bottomRight.getY() + (double)topLeft.getY()) / 2;
@@ -115,10 +105,9 @@ public class Unit implements Runnable
         return squares;
     }
 
-    private void placeCentralTromino(Grid grid, Square[] squares)
+    //Places a tromino at the center of the unit, given the detected specialPart
+    private final void placeCentralTromino(Grid grid, Square[] squares, int specialPart)
     {
-        int specialPart = locateSpecialPart();
-
         switch(specialPart)
         {
             case 0:
@@ -144,15 +133,8 @@ public class Unit implements Runnable
         }
     }
 
-    private boolean canBeSplit()
+    private final boolean canBeSplit()
     {
         return bottomRight.getY() - topLeft.getY() > 2;
-    }
-
-
-    @Override
-    public void run()
-    {
-
     }
 }
