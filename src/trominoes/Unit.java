@@ -1,3 +1,5 @@
+package trominoes;
+
 /**
  * Created by mario on 24-Jul-16.
  */
