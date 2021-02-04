@@ -1,4 +1,4 @@
-# MiniMathProblems
+# MiniInterviewProblems
 
 This project contains a number of mini programs that try to solve some interesting mathematical problems.
 
